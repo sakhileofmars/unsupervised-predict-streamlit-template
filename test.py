@@ -43,7 +43,7 @@ from sklearn.decomposition import TruncatedSVD # for collaborative model
 
 # Data Loading
 title_list = load_movie_titles('resources/data/movies.csv')
-merged_df = pd.read_csv('')
+merged_df = pd.read_csv(r'C:\Users\MALULEKE LOUIS\Downloads\merged data.csv')
 # Loading the vectorizer using pickle
 with open('resources/models/tfidf_vectorizer.pkl', 'rb') as vectorizer_file:
     vectorizer = pickle.load(vectorizer_file)
