@@ -44,13 +44,13 @@ from sklearn.decomposition import TruncatedSVD # for collaborative model
 # Data Loading
 title_list = load_movie_titles('resources/data/movies.csv')
 # Loading the vectorizer using pickle
-with open('tfidf_vectorizer.pkl', 'rb') as vectorizer_file:
+with open('resources/models/tfidf_vectorizer.pkl', 'rb') as vectorizer_file:
     vectorizer = pickle.load(vectorizer_file)
 #LOADING THE SCALER
-with open('resources/scaler.pkl', 'rb') as scaling:
+with open('resources/models/scaler.pkl', 'rb') as scaling:
     scaler = pickle.load(scaling)
     # loading model
-with open('resources/svd_model.pkl', 'rb') as model:
+with open('resources/models/svd_model.pkl', 'rb') as model:
     SVD = pickle.load(model)  
 # App declaration
 def main():
