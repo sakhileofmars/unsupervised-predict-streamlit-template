@@ -112,9 +112,55 @@ def main():
     # -------------------------------------------------------------------
 
     # ------------- SAFE FOR ALTERING/EXTENSION -------------------
-    if page_selection == "Solution Overview":
-        st.title("Solution Overview")
-        st.write("Describe your winning approach on this page")
+    # Set the dark background color
+st.set_page_config(
+    page_title="Your App Title",
+    page_icon=":chart_with_upwards_trend:",
+    layout="wide",
+    initial_sidebar_state="expanded",
+    # You can replace this color with your desired dark color code
+    background_color="#121212",  # Example: Hex color for dark background
+)
+
+page_selection = st.selectbox("Select a page", ["Solution Overview", "Meet the Team"])
+
+if page_selection == "Solution Overview":
+    st.title("Solution Overview")
+    st.write("Describe your winning approach on this page")
+
+# Meet the team page
+elif page_selection == 'Meet the Team':
+    st.title("Meet the Team")
+
+    # Team Lead
+    st.write("- Ayanda Moloi: Team Lead")
+    st.write("  - Background: Leadership and Project Management")
+    st.write("  - Experience: Led the overall project development and coordination of this project.")
+
+    # Project Manager
+    st.write("- Cathrine Mamosadi: Project Manager")
+    st.write("  - Background: Project Management and Coordination")
+    st.write("  - Experience: Managed project timelines, resources, and communication.")
+
+    # Data Engineer
+    st.write("- Sakhile Zungu: Data Engineer")
+    st.write("  - Background: Data Engineering and Database Management")
+    st.write("  - Experience: Responsible for Model training and engineering.")
+
+    # Data Scientist
+    st.write("- Pinky Ndleve: Data Scientist")
+    st.write("  - Background: Data Science and Machine Learning")
+    st.write("  - Experience: Developed machine learning models and conducted data analysis.")
+
+    # App Developer
+    st.write("- Lauretta Maluleke: App Developer")
+    st.write("  - Background:  Web Development")
+    st.write("  - Experience: Developed the Streamlit web application for Recommender systems.")
+
+    # Data Analyst
+    st.write("- Asmaa Hassan: Data Analyst")
+    st.write("  - Background: Data visualization and Analysis")
+    st.write("  - Experience: Power Bi and Python analysis")
 
     # You may want to add more sections here for aspects such as an EDA,
     # or to provide your business pitch.
