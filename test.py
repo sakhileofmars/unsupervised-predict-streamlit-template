@@ -1,4 +1,4 @@
-"""
+ """
 
     Streamlit webserver-based Recommender Engine.
 
@@ -95,10 +95,12 @@ def main():
                               We'll need to fix it!")
 
 
-        if sys == 'SVD':
+        if sys == 'Collaborative Based Filtering':
             if st.button("Recommend"):
                 try:
                     with st.spinner('Crunching the numbers...'):
+			    model = 'SVD'
+			    usable_data = title_list
                         top_recommendations = collab_model(movie_list=fav_movies,
                                                            top_n=10)
                     st.title("We think you'll like:")
