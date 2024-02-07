@@ -121,9 +121,6 @@ st.set_page_config(
     # You can replace this color with your desired dark color code
     background_color="#121212",  # Example: Hex color for dark background
 )
-
-page_selection = st.selectbox("Select a page", ["Solution Overview", "Meet the Team"])
-
 if page_selection == "Solution Overview":
     st.title("Solution Overview")
     st.write("Describe your winning approach on this page")
