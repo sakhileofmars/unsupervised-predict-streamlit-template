@@ -101,7 +101,8 @@ def main():
                 try:
                     with st.spinner('Crunching the numbers...'):
 			    model = 'SVD'
-			    data['predict_score] = 
+			    merged_df['predict_score'] = merged_df.apply(lambda row: collab_model.predict_score(row['userId'], row['title']), axis=1)
+
                         top_recommendations = collab_model(movie_list=fav_movies,
                                                            top_n=10)
                     st.title("We think you'll like:")
