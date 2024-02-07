@@ -88,7 +88,7 @@ def main():
                               We'll need to fix it!")
 
 
-        if sys == 'resources/models/svd_model.pkl'':
+        if sys == 'resources/models/svd_model.pkl':
             if st.button("Recommend"):
                 try:
                     with st.spinner('Crunching the numbers...'):
