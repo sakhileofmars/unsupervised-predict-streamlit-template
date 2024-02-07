@@ -119,7 +119,7 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded",
     # You can replace this color with your desired dark color code
-    background_color="#121212",  # Example: Hex color for dark background
+    backgroundColor="#121212",  # Example: Hex color for dark background
 )
 if page_selection == "Solution Overview":
     st.title("Solution Overview")
