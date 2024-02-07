@@ -43,8 +43,11 @@ title_list = load_movie_titles('resources/data/movies.csv')
 with open('tfidf_vectorizer.pkl', 'rb') as vectorizer_file:
     vectorizer = pickle.load(vectorizer_file)
 #LOADING THE SCALER
-with open('scaler.pkl', 'rb') as scaling:
-    scaler= pickle.load(scaling)
+with open('resources/scaler.pkl', 'rb') as scaling:
+    scaler = pickle.load(scaling)
+    # loading model
+with open('resources/svd_model.pkl', 'rb') as model:
+    SVD = pickle.load(model)  
 # App declaration
 def main():
 
@@ -88,7 +91,7 @@ def main():
                               We'll need to fix it!")
 
 
-        if sys == 'resources/models/svd_model.pkl':
+        if sys == 'SVD':
             if st.button("Recommend"):
                 try:
                     with st.spinner('Crunching the numbers...'):
