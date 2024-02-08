@@ -41,11 +41,12 @@ from sklearn.preprocessing import StandardScaler #for numeri values
 from sklearn.decomposition import TruncatedSVD # for collaborative model
 from surprise import Reader, Dataset
 from surprise import SVD
+import pickle
 
 # Data Loading
 title_list = load_movie_titles('resources/data/movies.csv')
 movies = pd.read_csv('resources/data/movies.csv')
-merged_df = pd.read_csv(r'C:\Users\MALULEKE LOUIS\Downloads\merged data.csv')
+merged_df = pd.read_csv(r'C:\Users\MALULEKE LOUIS\Downloads\merged_data.csv')
 # Loading the vectorizer using pickle
 with open('resources/models/tfidf_vectorizer.pkl', 'rb') as vectorizer_file:
     vectorizer = pickle.load(vectorizer_file)
