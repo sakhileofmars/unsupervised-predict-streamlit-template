@@ -118,14 +118,6 @@ def main():
 
     # ------------- SAFE FOR ALTERING/EXTENSION -------------------
     # Set the dark background color
-st.set_page_config(
-    page_title="Your App Title",
-    page_icon=":chart_with_upwards_trend:",
-    layout="wide",
-    initial_sidebar_state="expanded",
-    # You can replace this color with your desired dark color code
-    backgroundColor="#121212",  # Example: Hex color for dark background
-)
 if page_selection == "Solution Overview":
     st.title("Solution Overview")
     st.write("Describe your winning approach on this page")
