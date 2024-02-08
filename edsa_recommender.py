@@ -119,7 +119,13 @@ def main():
     # ------------- SAFE FOR ALTERING/EXTENSION -------------------
     if page_selection == "Solution Overview":
         st.title("Solution Overview")
-        st.write("Describe your winning approach on this page")
+	    
+    elif page_selection == "Movie Search":
+    # Code for "Movie Search" page
+    # ...
+    elif page_selection == "Meet the Team":
+    # Code for "Meet the Team" page
+    # ...
 
     # You may want to add more sections here for aspects such as an EDA,
     # or to provide your business pitch.
