@@ -121,10 +121,8 @@ def main():
         st.title("Solution Overview")
 	    
     elif page_selection == "Movie Search":
-	page_selection = st.sidebar.selectbox("Choose Option", page_options)
-
-    st.write('# Movie Recommender Engine')
-    st.write('### Cinemate Recommender')
+	    st.write('# Movie Recommender Engine')
+	    st.write('### Cinemate Recommender')
     st.image('resources/imgs/Image_header.png', use_column_width=True)
 
     # Recommender System algorithm selection
