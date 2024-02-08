@@ -44,8 +44,17 @@ from surprise import SVD
 
 # Data Loading
 title_list = load_movie_titles('resources/data/movies.csv')
-merged_df = pd.load_csv('')
-SVD
+movies = pd.read_csv('resources/data/movies.csv')
+merged_df = pd.read_csv(r'C:\Users\MALULEKE LOUIS\Downloads\merged data.csv')
+# Loading the vectorizer using pickle
+with open('resources/models/tfidf_vectorizer.pkl', 'rb') as vectorizer_file:
+    vectorizer = pickle.load(vectorizer_file)
+#LOADING THE SCALER
+with open('resources/models/scaler.pkl', 'rb') as scaling:
+    scaler = pickle.load(scaling)
+    # loading model
+with open('resources/models/svd_model.pkl', 'rb') as model:
+    SVD = pickle.load(model)
 
 # App declaration
 def main():
