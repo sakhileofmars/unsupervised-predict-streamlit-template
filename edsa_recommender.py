@@ -36,9 +36,16 @@ import numpy as np
 from utils.data_loader import load_movie_titles
 from recommenders.collaborative_based import collab_model
 from recommenders.content_based import content_model
+from sklearn.feature_extraction.text import TfidfVectorizer #for vectorizing text data'
+from sklearn.preprocessing import StandardScaler #for numeri values
+from sklearn.decomposition import TruncatedSVD # for collaborative model
+from surprise import Reader, Dataset
+from surprise import SVD
 
 # Data Loading
 title_list = load_movie_titles('resources/data/movies.csv')
+merged_df = pd.load_csv('')
+SVD
 
 # App declaration
 def main():
