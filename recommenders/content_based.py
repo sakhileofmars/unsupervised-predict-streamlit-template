@@ -1,29 +1,29 @@
 """
 
-    Content-based filtering for item recommendation.
+Content-based filtering for item recommendation.
 
-    Author: Explore Data Science Academy.
+Author: Explore Data Science Academy.
 
-    Note:
-    ---------------------------------------------------------------------
-    Please follow the instructions provided within the README.md file
-    located within the root of this repository for guidance on how to use
-    this script correctly.
+Note:
+---------------------------------------------------------------------
+Please follow the instructions provided within the README.md file
+located within the root of this repository for guidance on how to use
+this script correctly.
 
-    NB: You are required to extend this baseline algorithm to enable more
-    efficient and accurate computation of recommendations.
+NB: You are required to extend this baseline algorithm to enable more
+efficient and accurate computation of recommendations.
 
-    !! You must not change the name and signature (arguments) of the
-    prediction function, `content_model` !!
+!! You must not change the name and signature (arguments) of the
+prediction function, `content_model` !!
 
-    You must however change its contents (i.e. add your own content-based
-    filtering algorithm), as well as altering/adding any other functions
-    as part of your improvement.
+You must, however, change its contents (i.e. add your own content-based
+filtering algorithm), as well as altering/adding any other functions
+as part of your improvement.
 
-    ---------------------------------------------------------------------
+---------------------------------------------------------------------
 
-    Description: Provided within this file is a baseline content-based
-    filtering algorithm for rating predictions on Movie data.
+Description: Provided within this file is a baseline content-based
+filtering algorithm for rating predictions on Movie data.
 
 """
 
@@ -35,9 +35,10 @@ from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import CountVectorizer
 
 # Importing data
-movies = pd.read_csv('resources/data/movies.csv', sep = ',')
+movies = pd.read_csv('resources/data/movies.csv', sep=',')
 ratings = pd.read_csv('resources/data/ratings.csv')
 movies.dropna(inplace=True)
+merged_df = pd.read_csv('resources/data/merged_data.csv')
 
 def data_preprocessing(subset_size):
     """Prepare data for use within Content filtering algorithm.
@@ -54,16 +55,20 @@ def data_preprocessing(subset_size):
 
     """
     # Split genre data into individual words.
-    movies['keyWords'] = movies['genres'].str.replace('|', ' ')
+    merged_df['keyWords'] = merged_df['genres'].str.replace('|', ' ')
+
     # Subset of the data
-    movies_subset = movies[:subset_size]
-    return movies_subset
+    subset_size = int(0.2 * len(merged_df))
+    merged_df_subset = merged_df[:subset_size]
+
+    # Return the subset
+    return merged_df_subset
 
 # !! DO NOT CHANGE THIS FUNCTION SIGNATURE !!
-# You are, however, encouraged to change its content.  
-def content_model(movie_list,top_n=10):
+# You are, however, encouraged to change its content.
+def content_model(movie_list, top_n=10):
     """Performs Content filtering based upon a list of movies supplied
-       by the app user.
+    by the app user.
 
     Parameters
     ----------
@@ -95,18 +100,19 @@ def content_model(movie_list,top_n=10):
     rank_2 = cosine_sim[idx_2]
     rank_3 = cosine_sim[idx_3]
     # Calculating the scores
-    score_series_1 = pd.Series(rank_1).sort_values(ascending = False)
-    score_series_2 = pd.Series(rank_2).sort_values(ascending = False)
-    score_series_3 = pd.Series(rank_3).sort_values(ascending = False)
+    score_series_1 = pd.Series(rank_1).sort_values(ascending=False)
+    score_series_2 = pd.Series(rank_2).sort_values(ascending=False)
+    score_series_3 = pd.Series(rank_3).sort_values(ascending=False)
     # Getting the indexes of the 10 most similar movies
-    listings = score_series_1.append(score_series_1).append(score_series_3).sort_values(ascending = False)
+    listings = score_series_1.append(score_series_1).append(score_series_3).sort_values(ascending=False)
 
     # Store movie names
     recommended_movies = []
     # Appending the names of movies
     top_50_indexes = list(listings.iloc[1:50].index)
     # Removing chosen movies
-    top_indexes = np.setdiff1d(top_50_indexes,[idx_1,idx_2,idx_3])
+    top_indexes = np.setdiff1d(top_50_indexes, [idx_1, idx_2, idx_3])
     for i in top_indexes[:top_n]:
-        recommended_movies.append(list(movies['title'])[i])
+        recommended_movies.append(list(merged_df['title'])[i])
+
     return recommended_movies
