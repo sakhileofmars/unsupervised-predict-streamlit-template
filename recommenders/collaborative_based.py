@@ -9,7 +9,7 @@ import lightgbm as lgb  # Added import for LightGBM
 # Importing data
 movies_df = pd.read_csv('resources/data/movies.csv', sep=',')
 ratings_df = pd.read_csv('resources/data/ratings.csv')
-merged_df = pd.read_csv('resources/data/Merged_data.csv')
+merged_df = pd.read_csv('resources/data/merged_data.csv')
 
 # We make use of an lgbm model trained on a subset of the MovieLens 10k dataset.
 model = pickle.load(open('resources/models/lgbm_model.pkl', 'rb'))
