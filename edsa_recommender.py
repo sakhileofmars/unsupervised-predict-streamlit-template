@@ -45,7 +45,7 @@ def main():
 
     # DO NOT REMOVE the 'Recommender System' option below, however,
     # you are welcome to add more options to enrich your app.
-    page_options = ["Recommender System","Solution Overview"]
+    page_options = ["Recommender System","Solution Overview","Meet the Team", "Contact Details" ]
 
     # -------------------------------------------------------------------
     # ----------- !! THIS CODE MUST NOT BE ALTERED !! -------------------
@@ -102,9 +102,51 @@ def main():
     # ------------- SAFE FOR ALTERING/EXTENSION -------------------
     if page_selection == "Solution Overview":
         st.title("Solution Overview")
-        st.write("Describe your winning approach on this page")
+        st.write(""""
+    Welcome to Cinemate - your personalized movie recommendation engine!
+    
+    Cinemate uses advanced algorithms to provide you with movie recommendations based on your preferences.
+    Whether you're a fan of content-based filtering or collaborative-based filtering, Cinemate has you covered.
+    
+    Simply select your favorite movies, choose an algorithm, and let Cinemate crunch the numbers to suggest
+    movies tailored just for you. Enjoy the movie-watching experience with Cinemate Recommender!
+    """)
 
-    # You may want to add more sections here for aspects such as an EDA,
+    elif page_selection == "Meet the Team":
+    # Team Lead
+    st.write("- Ayanda Moloi: Team Lead")
+    st.write("  - Background: Leadership and Project Management")
+    st.write("  - Experience: Led the overall project development and coordination of this project.")
+
+    # Project Manager
+    st.write("- Cathrine Mamosadi: Project Manager")
+    st.write("  - Background: Project Management and Coordination")
+    st.write("  - Experience: Managed project timelines, resources, and communication.")
+
+    # Data Engineer
+    st.write("- Sakhile Zungu: Data Engineer")
+    st.write("  - Background: Data Engineering and Database Management")
+    st.write("  - Experience: Responsible for Model training and engineering.")
+
+    # Data Scientist
+    st.write("- Pinky Ndleve: Data Scientist")
+    st.write("  - Background: Data Science and Machine Learning")
+    st.write("  - Experience: Developed machine learning models and conducted data analysis.")
+
+    # App Developer
+    st.write("- Lauretta Maluleke: App Developer")
+    st.write("  - Background:  Web Development")
+    st.write("  - Experience: Developed the Streamlit web application for Recommender systems.")
+
+    # Data Analyst
+    st.write("- Asmaa Hassan: Data Analyst")
+    st.write("  - Background: Data visualization and Analysis")
+    st.write("  - Experience: Power Bi and Python analysis")
+    
+    #contact details
+    elif page_selection == "Contact Deatails"
+    st.write("send us an email at info@CineMate.co.za")
+   # You may want to add more sections here for aspects such as an EDA,
     # or to provide your business pitch.
 
 
