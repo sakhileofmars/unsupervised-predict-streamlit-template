@@ -8,7 +8,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 # Importing data
 movies = pd.read_csv('resources/data/movies.csv', sep=',')
 ratings = pd.read_csv('resources/data/ratings.csv')
-merged_df = pd.read_csv('resources/data/Merged_data.csv')
+merged_df = pd.read_csv('resources/data/merged_data.csv')#adjust the path accordingly
 merged_df.dropna(inplace=True)
 
 def data_preprocessing(subset_size):
