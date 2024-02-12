@@ -28,8 +28,8 @@ def data_preprocessing(subset_size):
     # Split genre data into individual words.
     merged_df['keyWords'] = merged_df['genres'].str.replace('|', ' ')
 
-    # Subset of the data
-    subset_size = int(0.5 * len(merged_df))
+    # entire dataset
+    subset_size = int(len(merged_df))
     merged_df_subset = merged_df[:subset_size]
 
     # Return the subset

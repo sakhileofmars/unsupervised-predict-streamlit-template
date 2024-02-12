@@ -11,7 +11,7 @@ movies_df = pd.read_csv('resources/data/movies.csv', sep=',')
 ratings_df = pd.read_csv('resources/data/ratings.csv')
 merged_df = pd.read_csv('resources/data/merged_data.csv')
 
-# We make use of an lgbm model trained on a subset of the MovieLens 10k dataset.
+# We make use of an lgbm model trained with full dataset.
 model = pickle.load(open('resources/models/lgbm_model.pkl', 'rb'))
 
 def prediction_item(item_id):
@@ -114,5 +114,5 @@ def collab_model(movie_list, top_n=10):
     # Removing chosen movies
     top_indexes = np.setdiff1d(top_50_indexes, [idx_1, idx_2, idx_3])
     for i in top_indexes[:top_n]:
-        recommended_movies.append(list(movies_df['title'])[i])
+        recommended_movies.append(list(merged_df['title'])[i])
     return recommended_movies
