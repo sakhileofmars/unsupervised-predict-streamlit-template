@@ -11,7 +11,7 @@ movies_df = pd.read_csv('resources/data/movies.csv', sep=',')
 ratings_df = pd.read_csv('resources/data/ratings.csv')
 merged_df = pd.read_csv('resources/data/merged_data.csv')
 
-# We make use of an lgbm model trained with full dataset.
+# We make use of an lgbm model trained with the full dataset.
 model = pickle.load(open('resources/models/lgbm_model.pkl', 'rb'))
 
 def prediction_item(item_id):
@@ -40,7 +40,7 @@ def prediction_item(item_id):
         predictions.append(model.predict(iid=item_id, uid=ui, verbose=False))
     return predictions
 
-def pred_movies(movie_list):
+def pred_movies(movie_list, df):
     """Maps the given favourite movies selected within the app to corresponding
     users within the MovieLens dataset.
 
@@ -48,6 +48,8 @@ def pred_movies(movie_list):
     ----------
     movie_list : list
         Three favourite movies selected by the app user.
+    df : pd.DataFrame
+        The DataFrame to be used for collaborative filtering.
 
     Returns
     -------
@@ -70,12 +72,14 @@ def pred_movies(movie_list):
 
 # !! DO NOT CHANGE THIS FUNCTION SIGNATURE !!
 # You are, however, encouraged to change its content.
-def collab_model(movie_list, top_n=10):
+def collab_model(df, movie_list, top_n=10):
     """Performs Collaborative filtering based upon a list of movies supplied
     by the app user.
 
     Parameters
     ----------
+    df : pd.DataFrame
+        The DataFrame to be used for collaborative filtering.
     movie_list : list (str)
         Favorite movies chosen by the app user.
     top_n : type
@@ -88,11 +92,11 @@ def collab_model(movie_list, top_n=10):
 
     """
 
-    indices = pd.Series(merged_df['title'])
-    movie_ids = pred_movies(movie_list)
-    df_init_users = merged_df[merged_df['userId'] == movie_ids[0]]
+    indices = pd.Series(df['title'])
+    movie_ids = pred_movies(movie_list, df)
+    df_init_users = df[df['userId'] == movie_ids[0]]
     for i in movie_ids:
-        df_init_users = df_init_users.append(merged_df[merged_df['userId'] == i])
+        df_init_users = df_init_users.append(df[df['userId'] == i])
     # Getting the cosine similarity matrix
     cosine_sim = cosine_similarity(np.array(df_init_users), np.array(df_init_users))
     idx_1 = indices[indices == movie_list[0]].index[0]
@@ -114,5 +118,5 @@ def collab_model(movie_list, top_n=10):
     # Removing chosen movies
     top_indexes = np.setdiff1d(top_50_indexes, [idx_1, idx_2, idx_3])
     for i in top_indexes[:top_n]:
-        recommended_movies.append(list(merged_df['title'])[i])
-    return recommended_movies
+        recommended_movies.append(list(df['title'])[i])
+   

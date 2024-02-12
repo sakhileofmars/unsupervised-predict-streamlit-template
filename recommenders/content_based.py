@@ -60,7 +60,7 @@ def content_model(df, movie_list, top_n=10):
     """
     # Initializing the empty list of recommended movies
     recommended_movies = []
-    data = data_preprocessing(df, 27000)
+    data = data_preprocessing(27000)
 
     # Instantiating and generating the count matrix
     count_vec = CountVectorizer()
