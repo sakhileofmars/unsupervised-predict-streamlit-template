@@ -8,14 +8,16 @@ from sklearn.feature_extraction.text import CountVectorizer
 # Importing data
 movies = pd.read_csv('resources/data/movies.csv', sep=',')
 ratings = pd.read_csv('resources/data/ratings.csv')
-merged_df = pd.read_csv('resources/data/merged_data.csv')#adjust the path accordingly
+merged_df = pd.read_csv('resources/data/merged_data.csv')  # adjust the path accordingly
 merged_df.dropna(inplace=True)
 
-def data_preprocessing(subset_size):
+def data_preprocessing(df, subset_size):
     """Prepare data for use within Content filtering algorithm.
 
     Parameters
     ----------
+    df : pd.DataFrame
+        The DataFrame to be preprocessed.
     subset_size : int
         Number of movies to use within the algorithm.
 
@@ -26,24 +28,25 @@ def data_preprocessing(subset_size):
 
     """
     # Split genre data into individual words.
-    merged_df['keyWords'] = merged_df['genres'].str.replace('|', ' ')
+    df['keyWords'] = df['genres'].str.replace('|', ' ')
 
     # entire dataset
-    subset_size = int(len(merged_df))
-    merged_df_subset = merged_df[:subset_size]
+    subset_size = int(len(df))
+    df_subset = df[:subset_size]
 
     # Return the subset
-    return merged_df_subset
-
+    return df_subset
 
 # !! DO NOT CHANGE THIS FUNCTION SIGNATURE !!
 # You are, however, encouraged to change its content.
-def content_model(movie_list, top_n=10):
+def content_model(df, movie_list, top_n=10):
     """Performs Content filtering based upon a list of movies supplied
        by the app user.
 
     Parameters
     ----------
+    df : pd.DataFrame
+        The DataFrame to be used for content-based filtering.
     movie_list : list (str)
         Favorite movies chosen by the app user.
     top_n : type
@@ -57,7 +60,7 @@ def content_model(movie_list, top_n=10):
     """
     # Initializing the empty list of recommended movies
     recommended_movies = []
-    data = data_preprocessing(27000)
+    data = data_preprocessing(df, 27000)
 
     # Instantiating and generating the count matrix
     count_vec = CountVectorizer()
@@ -92,6 +95,6 @@ def content_model(movie_list, top_n=10):
     top_indexes = np.setdiff1d(top_50_indexes, [idx_1, idx_2, idx_3])
 
     for i in top_indexes[:top_n]:
-        recommended_movies.append(list(merged_df['title'])[i])
+        recommended_movies.append(list(df['title'])[i])
 
     return recommended_movies

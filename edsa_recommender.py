@@ -11,6 +11,7 @@ from recommenders.collaborative_based import collab_model
 from recommenders.content_based import content_model
 
 # Data Loading
+merged_df = pd.read_csv('resources/data/merged_data.csv')  # Make sure to adjust the path accordingly
 title_list = load_movie_titles('resources/data/merged_data.csv')
 
 # App declaration
@@ -36,7 +37,7 @@ def main():
 
         # User-based preferences
         st.write('### Enter Your Three Favorite Movies')
-        movie_1 = st.selectbox('Fisrt Option', title_list[14930:15200])
+        movie_1 = st.selectbox('First Option', title_list[14930:15200])
         movie_2 = st.selectbox('Second Option', title_list[25055:25255])
         movie_3 = st.selectbox('Third Option', title_list[21100:21200])
         fav_movies = [movie_1, movie_2, movie_3]
@@ -59,7 +60,7 @@ def main():
             if st.button("Recommend"):
                 try:
                     with st.spinner('Crunching the numbers...'):
-                        top_recommendations = collab_model(movie_list=fav_movies,
+                        top_recommendations = collab_model(df=merged_df, movie_list=fav_movies,
                                                            top_n=10)
                     st.title("We think you'll like:")
                     for i, j in enumerate(top_recommendations):
