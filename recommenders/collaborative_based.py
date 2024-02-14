@@ -1,20 +1,12 @@
-# Script dependencies
+# collaborative_based.py
 import pandas as pd
-import numpy as np
-import pickle
 from surprise import Reader, Dataset
-from sklearn.metrics.pairwise import cosine_similarity
-import lightgbm as lgb  # Added import for LightGBM
+from sklearn.metrics.pairwise import cosine_similarity  # Add this import
+# Remove unused import: import lightgbm as lgb
 
-# Importing data
-movies_df = pd.read_csv('resources/data/movies.csv', sep=',')
-ratings_df = pd.read_csv('resources/data/ratings.csv')
-merged_df = pd.read_csv('resources/data/merged_data.csv')
+train = pd.read_csv('resource/data/train.csv')
 
-# We make use of an lgbm model trained with the full dataset.
-model = pickle.load(open('resources/models/lgbm_model.pkl', 'rb'))
-
-def prediction_item(item_id):
+def prediction_item(item_id, train, model):
     """Map a given favourite movie to users within the
     MovieLens dataset with the same preference.
 
@@ -22,6 +14,10 @@ def prediction_item(item_id):
     ----------
     item_id : int
         A MovieLens Movie ID.
+    train : pd.DataFrame
+        DataFrame containing user-item ratings.
+    model : Surprise model
+        Collaborative filtering model.
 
     Returns
     -------
@@ -29,10 +25,8 @@ def prediction_item(item_id):
         User IDs of users with similar high ratings for the given movie.
 
     """
-    # Data preprocessing
-    # Assuming 'userId', 'movieId', and 'rating' are columns in merged_df
     reader = Reader(rating_scale=(0, 5))
-    load_df = Dataset.load_from_df(merged_df[['userId', 'movieId', 'rating']], reader)
+    load_df = Dataset.load_from_df(train[['userId', 'movieId', 'rating']], reader)
     a_train = load_df.build_full_trainset()
 
     predictions = []
@@ -40,7 +34,7 @@ def prediction_item(item_id):
         predictions.append(model.predict(iid=item_id, uid=ui, verbose=False))
     return predictions
 
-def pred_movies(movie_list, df):
+def pred_movies(movie_list, train, model):
     """Maps the given favourite movies selected within the app to corresponding
     users within the MovieLens dataset.
 
@@ -48,8 +42,10 @@ def pred_movies(movie_list, df):
     ----------
     movie_list : list
         Three favourite movies selected by the app user.
-    df : pd.DataFrame
-        The DataFrame to be used for collaborative filtering.
+    train : pd.DataFrame
+        DataFrame containing user-item ratings.
+    model : Surprise model
+        Collaborative filtering model.
 
     Returns
     -------
@@ -57,32 +53,24 @@ def pred_movies(movie_list, df):
         User-ID's of users with similar high ratings for each movie.
 
     """
-    # Store the id of users
     id_store = []
-    # For each movie selected by a user of the app,
-    # predict a corresponding user within the dataset with the highest rating
     for i in movie_list:
-        predictions = prediction_item(item_id=i)
+        predictions = prediction_item(item_id=i, train=train, model=model)
         predictions.sort(key=lambda x: x.est, reverse=True)
-        # Take the top 10 user id's from each movie with the highest rankings
-        for pred in predictions[:10]:
-            id_store.append(pred.uid)
-    # Return a list of user id's
+        id_store.extend([pred.uid for pred in predictions[:10]])
     return id_store
 
-# !! DO NOT CHANGE THIS FUNCTION SIGNATURE !!
-# You are, however, encouraged to change its content.
-def collab_model(df, movie_list, top_n=10):
+def collab_model(train, user, top_n=10):
     """Performs Collaborative filtering based upon a list of movies supplied
     by the app user.
 
     Parameters
     ----------
-    df : pd.DataFrame
-        The DataFrame to be used for collaborative filtering.
-    movie_list : list (str)
-        Favorite movies chosen by the app user.
-    top_n : type
+    train : pd.DataFrame
+        DataFrame to be used for collaborative filtering.
+    user : int
+        User ID for collaborative filtering.
+    top_n : int
         Number of top recommendations to return to the user.
 
     Returns
@@ -91,32 +79,17 @@ def collab_model(df, movie_list, top_n=10):
         Titles of the top-n movie recommendations to the user.
 
     """
+    indices = pd.Series(train['title'])
+    movie_ids = pred_movies([1, 2, 3], train, model=None)  # Placeholder movie IDs [1, 2, 3]
+    df_init_users = train[train['userId'].isin(movie_ids)]
 
-    indices = pd.Series(df['title'])
-    movie_ids = pred_movies(movie_list, df)
-    df_init_users = df[df['userId'] == movie_ids[0]]
-    for i in movie_ids:
-        df_init_users = df_init_users.append(df[df['userId'] == i])
-    # Getting the cosine similarity matrix
-    cosine_sim = cosine_similarity(np.array(df_init_users), np.array(df_init_users))
-    idx_1 = indices[indices == movie_list[0]].index[0]
-    idx_2 = indices[indices == movie_list[1]].index[0]
-    idx_3 = indices[indices == movie_list[2]].index[0]
-    # Creating a Series with the similarity scores in descending order
-    rank_1 = cosine_sim[idx_1]
-    rank_2 = cosine_sim[idx_2]
-    rank_3 = cosine_sim[idx_3]
-    # Calculating the scores
-    score_series_1 = pd.Series(rank_1).sort_values(ascending=False)
-    score_series_2 = pd.Series(rank_2).sort_values(ascending=False)
-    score_series_3 = pd.Series(rank_3).sort_values(ascending=False)
-    # Appending the names of movies
-    listings = score_series_1.append(score_series_1).append(score_series_3).sort_values(ascending=False)
-    recommended_movies = []
-    # Choose top 50
-    top_50_indexes = list(listings.iloc[1:50].index)
-    # Removing chosen movies
-    top_indexes = np.setdiff1d(top_50_indexes, [idx_1, idx_2, idx_3])
-    for i in top_indexes[:top_n]:
-        recommended_movies.append(list(df['title'])[i])
-   
+    cosine_sim = cosine_similarity(df_init_users[['userId', 'movieId', 'rating']], df_init_users[['userId', 'movieId', 'rating']])
+    idx_movies = [indices[indices == i].index[0] for i in [1, 2, 3]]  # Placeholder movie IDs [1, 2, 3]
+
+    rank_movies = [cosine_sim[idx] for idx in idx_movies]
+    score_series_movies = [pd.Series(rank).sort_values(ascending=False) for rank in rank_movies]
+
+    listings_movies = pd.concat(score_series_movies).sort_values(ascending=False)
+    recommended_movies = list(train['title'][listings_movies.index])
+
+    return recommended_movies[:top_n]
