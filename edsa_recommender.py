@@ -80,7 +80,7 @@ def main():
 
     # ------------- SAFE FOR ALTERING/EXTENSION -------------------
 
-    if page_selection == "Solution Overview":
+    elif page_selection == "Solution Overview":
         st.title("Solution Overview")
         st.write("""
         Welcome to Cinemate - your personalized movie recommendation engine!

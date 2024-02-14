@@ -4,7 +4,7 @@ from surprise import Reader, Dataset
 from sklearn.metrics.pairwise import cosine_similarity  # Add this import
 # Remove unused import: import lightgbm as lgb
 
-train = pd.read_csv('resource/data/train.csv')
+train = pd.read_csv('resources/data/train.csv')
 
 def prediction_item(item_id, train, model):
     """Map a given favourite movie to users within the
